@@ -1,0 +1,23 @@
+# 환경변수
+.env
+.env.*
+client/.env
+client/.env.*
+
+# node_modules
+node_modules/
+client/node_modules/
+
+# 빌드 산출물
+build/
+client/build/
+dist/
+client/dist/
+
+# 기타
+*.local
+*.log
+*.sqlite3
+*.bak
+*.swp
+*.tmp

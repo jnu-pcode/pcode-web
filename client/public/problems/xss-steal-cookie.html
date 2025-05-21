@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>What's your cookie?</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+  <style>
+    body { font-family: 'Pretendard', sans-serif; background: #f7f7f7; }
+    .container { max-width: 400px; margin: 60px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+    h2 { margin-bottom: 16px; }
+    input, button { padding: 8px; margin-top: 8px; width: 100%; }
+    #output { margin-top: 24px; min-height: 40px; background: #f0f0f0; border-radius: 6px; padding: 12px; }
+    .hint { color: #888; font-size: 0.95em; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>메시지 작성</h2>
+    <div style="display: flex; gap: 8px;">
+      <input id="userInput" placeholder="" style="flex:1; min-width:120px; max-width:330px;" />
+      <button onclick="showMessage()" style="width:70px; flex-shrink:0;">입력</button>
+    </div>
+    <iframe id="sandbox" style="width:100%;height:100px;margin-top:16px;"></iframe>
+  </div>
+  <script>
+    function showMessage() {
+      const val = document.getElementById('userInput').value;
+      const iframe = document.getElementById('sandbox');
+      iframe.contentDocument.open();
+      iframe.contentDocument.write('<script>document.cookie="cookie=flag{XSS_1s_Fun}; path=/";<\/script>' + val);
+      iframe.contentDocument.close();
+    }
+    function getPayloadFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('payload') || '';
+    }
+    window.onload = function() {
+      const payload = getPayloadFromQuery();
+      if (payload) {
+        const iframe = document.getElementById('sandbox');
+        iframe.contentDocument.open();
+        iframe.contentDocument.write('<script>document.cookie="cookie=flag{XSS_1s_Fun}; path=/";<\/script>' + payload);
+        iframe.contentDocument.close();
+      }
+    }
+  </script>
+</body>
+</html> 
